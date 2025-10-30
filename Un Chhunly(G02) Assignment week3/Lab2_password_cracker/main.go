@@ -19,7 +19,6 @@ func main() {
 	limit := flag.Int("limit", 0, "optional: limit number of words read (0 = no limit)")
 	flag.Parse()
 
-	// If the -hash flag was not provided, prompt interactively
 	if *targetHash == "" {
 		fmt.Print("Enter target SHA1 (hex): ")
 		in := bufio.NewReader(os.Stdin)
@@ -30,24 +29,20 @@ func main() {
 		*targetHash = strings.TrimSpace(text)
 	}
 
-	// Normalize target: remove spaces/newlines and lowercase
 	*targetHash = strings.ToLower(strings.ReplaceAll(*targetHash, " ", ""))
 	*targetHash = strings.ReplaceAll(*targetHash, "\n", "")
 	*targetHash = strings.ReplaceAll(*targetHash, "\r", "")
 
-	// Optional quick sanity check for length of SHA1 (40 hex chars)
 	if len(*targetHash) != 40 {
 		fmt.Fprintf(os.Stderr, "Warning: provided hash has length %d (expected 40 for SHA1). The program will continue.\n", len(*targetHash))
 	}
 
-	// Open wordlist
 	f, err := os.Open(*wordlistPath)
 	if err != nil {
 		log.Fatalf("Failed to open wordlist '%s': %v", *wordlistPath, err)
 	}
 	defer f.Close()
 
-	// Prepare verbose output file
 	verbF, err := os.Create(*outFile)
 	if err != nil {
 		log.Fatalf("Failed to create verbose file '%s': %v", *outFile, err)
@@ -56,7 +51,7 @@ func main() {
 
 	writeVerbose := func(s string) {
 		fmt.Fprintln(verbF, s)
-		fmt.Println(s) // also print to stdout for live view
+		fmt.Println(s) 
 	}
 
 	scanner := bufio.NewScanner(f)

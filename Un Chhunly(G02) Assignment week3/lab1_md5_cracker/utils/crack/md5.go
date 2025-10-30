@@ -10,7 +10,6 @@ import (
 	"strings"
 )
 
-// lineScanner wraps bufio.Scanner to provide trimmed text
 type lineScanner struct {
 	*bufio.Scanner
 }
@@ -25,7 +24,6 @@ func (ls lineScanner) Text() string {
 	return strings.TrimSpace(ls.Scanner.Text())
 }
 
-// CrackMD5 tries to find the password for the given MD5 hash
 func CrackMD5(hash string, wordlistPath string, verbose io.Writer) (string, error) {
 	file, err := os.Open(wordlistPath)
 	if err != nil {

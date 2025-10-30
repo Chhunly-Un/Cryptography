@@ -19,11 +19,9 @@ func main() {
 	fmt.Print("Please input value 2: ")
 	fmt.Scanln(&input2)
 
-	// Convert inputs to bytes
 	data1 := []byte(input1)
 	data2 := []byte(input2)
 
-	// Compute all hashes
 	hashMD5_A := md5.Sum(data1)
 	hashMD5_B := md5.Sum(data2)
 
@@ -39,7 +37,6 @@ func main() {
 	hashSHA3_A := sha3.Sum256(data1)
 	hashSHA3_B := sha3.Sum256(data2)
 
-	// Display results in your format
 	fmt.Println()
 	displayHash("MD5", hashToString(hashMD5_A[:]), hashToString(hashMD5_B[:]))
 	displayHash("SHA1", hashToString(hashSHA1_A[:]), hashToString(hashSHA1_B[:]))
@@ -48,12 +45,10 @@ func main() {
 	displayHash("SHA3-256", hashToString(hashSHA3_A[:]), hashToString(hashSHA3_B[:]))
 }
 
-// Converts hash bytes to hex string
 func hashToString(hash []byte) string {
 	return hex.EncodeToString(hash)
 }
 
-// Displays formatted hash output
 func displayHash(name, a, b string) {
 	fmt.Printf("Hash (%s):\n", name)
 	fmt.Printf("Output A = %s\n", a)

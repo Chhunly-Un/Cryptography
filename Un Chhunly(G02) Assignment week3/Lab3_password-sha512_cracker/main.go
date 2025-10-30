@@ -19,7 +19,6 @@ func main() {
 	limit := flag.Int("limit", 0, "optional: limit number of words read (0 = no limit)")
 	flag.Parse()
 
-	// Prompt for SHA512 if not provided via flag
 	if *targetHash == "" {
 		fmt.Print("Enter target SHA512 (hex): ")
 		in := bufio.NewReader(os.Stdin)
@@ -30,24 +29,20 @@ func main() {
 		*targetHash = strings.TrimSpace(text)
 	}
 
-	// normalize target: remove spaces/newlines and lowercase
 	normalized := strings.ToLower(strings.ReplaceAll(*targetHash, " ", ""))
 	normalized = strings.ReplaceAll(normalized, "\n", "")
 	normalized = strings.ReplaceAll(normalized, "\r", "")
 
-	// Optional sanity check for SHA512 length (128 hex chars)
 	if len(normalized) != 128 {
 		fmt.Fprintf(os.Stderr, "Warning: provided hash length = %d (expected 128 for SHA-512). Continuing anyway.\n", len(normalized))
 	}
 
-	// Open wordlist
 	f, err := os.Open(*wordlistPath)
 	if err != nil {
 		log.Fatalf("Failed to open wordlist '%s': %v", *wordlistPath, err)
 	}
 	defer f.Close()
 
-	// Prepare verbose output file
 	verbF, err := os.Create(*outFile)
 	if err != nil {
 		log.Fatalf("Failed to create verbose file '%s': %v", *outFile, err)
@@ -56,7 +51,7 @@ func main() {
 
 	writeVerbose := func(s string) {
 		fmt.Fprintln(verbF, s)
-		fmt.Println(s) // print also to stdout
+		fmt.Println(s) 
 	}
 
 	scanner := bufio.NewScanner(f)
